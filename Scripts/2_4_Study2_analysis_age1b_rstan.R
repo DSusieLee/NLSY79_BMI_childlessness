@@ -50,7 +50,6 @@ for(i in 1:2){
   post2 <- update(post1, .~. + racenew)
   post3 <- update(post1, .~. + BMI_pred_cat*racenew)
 
-
   fit <- as.array(post3)
   dimnames(fit)[[2]] <- c("chain1", "chain2", "chain3", "chain4")
   dimnames(fit)[[3]] <- c("Intercept \n(Healthy BMI & Whtes)",
