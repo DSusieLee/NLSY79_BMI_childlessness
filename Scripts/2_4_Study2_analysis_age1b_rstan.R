@@ -17,7 +17,7 @@ dm <- readRDS('./Data/220118_dm.rds') %>%
 df <- readRDS('./Data/220118_df.rds') %>% 
   filter(AGE1B_XRND != -999 &
            !racenew %in% "Other") %>%
-  mutate(status = ifelse(AGE1B_XRND == -998, 1, 2), #1=event not observed, 2=observed
+  mutate(status = ifelse(AGE1B_XRND == -998, 1, 2), #1=event not observed(censored), 2=observed
          age1b = ifelse(status == 1, last_surveyage, AGE1B_XRND),
          age1b = age1b-15,
          BMI_pred_cat = factor(BMI_pred_cat, levels = c('H', 'U', 'OV', 'O')),

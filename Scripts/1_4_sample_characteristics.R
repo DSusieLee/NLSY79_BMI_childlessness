@@ -1,6 +1,7 @@
 library(tidyverse)
 library(hrbrthemes)
 library(cowplot)
+library(ggpattern)
 
 dm <- readRDS('./Data/220118_dm.rds') %>% 
   filter(AGE1B_XRND != -999 &
@@ -44,6 +45,35 @@ dt_childless <-
         summarize(childless = sum(childless)/n()) %>%
         mutate(earlyincluded = 'No') 
       )
+
+#childless: black & white
+p1 <- 
+  ggplot(dt_childless %>% mutate(whites = racenew %in% "Whites"),
+         aes(fill = racenew, y = childless, x = earlyincluded, pattern = whites)) +
+  geom_bar_pattern(position = "dodge", stat = "identity") +
+  scale_pattern_manual(values = c("none", "stripe"), guide = "none") +
+  scale_fill_manual(
+    values = c("grey5","grey49","grey82"),
+    guide = guide_legend(override.aes = list(pattern = c("none","none","stripe")))) +
+  xlab("Early childbearers included?") +
+  ylab("Proportion of childless individuals") +
+  labs(
+    fill = "") +
+  facet_wrap(vars(sex)) +
+  theme_ipsum(
+    base_family = "serif",
+    axis_title_size = 15,
+    strip_text_size = 15,
+    base_size = 15,
+    plot_margin = margin(10,10,10,10)) +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 15))
+
+ggsave('./Figures/220808_Figure1.png', type = "cairo")
+
+
+# color version -----------------------------------------------------------
 
 #childless
 p1 <- 
